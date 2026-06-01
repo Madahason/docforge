@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS clips_scene_id_unique ON public.clips (scene_id);

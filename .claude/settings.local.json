@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(node -e \"const p = require\\('C:/Users/user/Documents/Dev 2026/docforge/node_modules/@tanstack/react-start/package.json'\\); const keys = Object.keys\\(p.exports || {}\\); console.log\\(keys.filter\\(k => k.includes\\('vite'\\) || k.includes\\('plugin'\\)\\).join\\('\\\\n'\\)\\);\")",
+      "Bash(node -e \"import\\('C:/Users/user/Documents/Dev 2026/docforge/node_modules/@tanstack/react-start/plugin/vite.js'\\).then\\(m => console.log\\(Object.keys\\(m\\)\\)\\).catch\\(e => console.log\\('ERR', e.message\\)\\)\")",
+      "Bash(node -e \"import\\('file:///C:/Users/user/Documents/Dev 2026/docforge/node_modules/@tanstack/react-start/plugin/vite.js'\\).then\\(m => console.log\\(Object.keys\\(m\\)\\)\\).catch\\(e => console.log\\('ERR', e.message\\)\\)\")",
+      "Bash(python3 -c \"import sys,json; p=json.load\\(sys.stdin\\); e=p.get\\('exports',{}\\); k='./plugin/vite'; print\\(json.dumps\\(e.get\\(k,'NOT FOUND'\\), indent=2\\)\\)\")",
+      "Bash(kill %1)",
+      "Bash(cat /tmp/devout.txt)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(npx tsc *)",
+      "Bash(npx eslint *)",
+      "Bash(grep -E \"'[^']*'$|\\\\\"[^\\\\\"]*\\\\\"$\")",
+      "Bash(npx prettier *)",
+      "Bash(grep -E \"^C:\\\\\\\\\\\\\\\\|error|warning\" \"C:/Users/user/AppData/Local/Temp/claude/C--Users-user-Documents-Dev-2026-docforge/ad684d45-0d31-48c8-9c66-68407027e87f/tasks/bf6f7k2dh.output\")",
+      "Bash(python3 -c ' *)",
+      "Bash(grep -v \"^C:\\\\\\\\\\\\\\\\Users\")",
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}
