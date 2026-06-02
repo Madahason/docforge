@@ -118,6 +118,7 @@ import { AutoGenerationPanel } from "@/components/studio/AutoGenerationPanel";
 import { DiagnosticsPanel } from "@/components/studio/DiagnosticsPanel";
 import { ManifestViewer, ManifestBuildingOverlay } from "@/components/studio/ManifestViewer";
 import { ExportPackageModal } from "@/components/studio/ExportPackageModal";
+import { FinalVideoPanel } from "@/components/studio/FinalVideoPanel";
 import {
   fetchManifests,
   restoreManifestVersion,
@@ -133,6 +134,7 @@ import {
   setAutoGenerateVisuals,
   finalizeAutoGeneration,
 } from "@/lib/auto-generate.functions";
+import { CLIP_SERVICE_URL, RENDERER_URL } from "@/lib/services";
 
 export const Route = createFileRoute("/_app/projects/$projectId")({
   component: ProjectStudioRoute,
@@ -173,15 +175,19 @@ function ProductionStudio() {
 
   // Keep-alive ping for clip service
   useEffect(() => {
-    const url = import.meta.env.VITE_CLIP_SERVICE_URL;
-    if (!url) return;
-
-    const ping = () => {
-      fetch(`${url}/health`).catch(() => {});
-    };
-
+    if (!CLIP_SERVICE_URL) return;
+    const ping = () => { fetch(`${CLIP_SERVICE_URL}/health`).catch(() => {}); };
     ping();
     const interval = setInterval(ping, 10 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Keep-alive ping for renderer service
+  useEffect(() => {
+    if (!RENDERER_URL) return;
+    const ping = () => { fetch(`${RENDERER_URL}/health`).catch(() => {}); };
+    ping();
+    const interval = setInterval(ping, 4 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -1483,6 +1489,7 @@ function RightSidebar() {
   ).length;
   const graphicsStats = computeGraphicsStats(scenes, sceneGraphics);
 
+  const [sidebarTab, setSidebarTab] = useState<"overview" | "export">("overview");
   const { generateAll, generating, progress, confirmDialog } = useGenerateAllVoiceovers();
 
   // Walkthrough gates for studio steps
@@ -1614,9 +1621,34 @@ function RightSidebar() {
 
   return (
     <aside
-      className="flex w-[280px] shrink-0 flex-col overflow-y-auto border-l p-4"
+      className="flex w-[280px] shrink-0 flex-col overflow-y-auto border-l"
       style={{ backgroundColor: "#0d0d0d", borderColor: "#2a2a2a" }}
     >
+      {/* Sidebar tab header */}
+      <div className="flex gap-4 border-b px-4 pt-3" style={{ borderColor: "#2a2a2a" }}>
+        {(["overview", "export"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setSidebarTab(t)}
+            className={cn(
+              "-mb-px border-b-2 pb-2 text-xs font-medium capitalize transition-colors flex items-center gap-1",
+              sidebarTab === t
+                ? "border-[var(--accent-gold)] text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {t === "export" && <Download className="h-3 w-3" />}
+            {t === "overview" ? "Overview" : "Export Video"}
+          </button>
+        ))}
+      </div>
+
+      {sidebarTab === "export" ? (
+        <div className="p-4">
+          <FinalVideoPanel projectId={project.id} />
+        </div>
+      ) : (
+        <div className="flex flex-col p-4">
       <SectionLabel>Project Status</SectionLabel>
       <div className="mt-3 flex flex-col items-center">
         <CircularProgress value={completePct} />
@@ -1731,6 +1763,8 @@ function RightSidebar() {
         <InfoRow label="Last Updated" value={new Date(project.updated_at).toLocaleDateString()} />
       </dl>
       {confirmDialog}
+        </div>
+      )}
     </aside>
   );
 }

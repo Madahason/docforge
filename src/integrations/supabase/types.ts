@@ -8,6 +8,45 @@ export type Database = {
   };
   public: {
     Tables: {
+      brand_configs: {
+        Row: {
+          id: string;
+          user_id: string;
+          primary_color: string;
+          secondary_color: string;
+          background_color: string;
+          text_color: string;
+          muted_color: string;
+          font_family: string;
+          logo_url: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          primary_color?: string;
+          secondary_color?: string;
+          background_color?: string;
+          text_color?: string;
+          muted_color?: string;
+          font_family?: string;
+          logo_url?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          primary_color?: string;
+          secondary_color?: string;
+          background_color?: string;
+          text_color?: string;
+          muted_color?: string;
+          font_family?: string;
+          logo_url?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       captions: {
         Row: {
           caption_lines: Json;
@@ -842,6 +881,8 @@ export type Database = {
       };
       render_jobs: {
         Row: {
+          brand_config: Json | null;
+          completed_at: string | null;
           created_at: string;
           duration_seconds: number;
           error_message: string | null;
@@ -852,13 +893,17 @@ export type Database = {
           output_url: string | null;
           progress_percent: number;
           project_id: string;
+          render_duration_ms: number | null;
           render_method: string;
+          render_type: string | null;
           scene_id: string;
           status: string;
           updated_at: string;
           user_id: string;
         };
         Insert: {
+          brand_config?: Json | null;
+          completed_at?: string | null;
           created_at?: string;
           duration_seconds?: number;
           error_message?: string | null;
@@ -869,13 +914,17 @@ export type Database = {
           output_url?: string | null;
           progress_percent?: number;
           project_id: string;
+          render_duration_ms?: number | null;
           render_method?: string;
+          render_type?: string | null;
           scene_id: string;
           status?: string;
           updated_at?: string;
           user_id: string;
         };
         Update: {
+          brand_config?: Json | null;
+          completed_at?: string | null;
           created_at?: string;
           duration_seconds?: number;
           error_message?: string | null;
@@ -886,7 +935,9 @@ export type Database = {
           output_url?: string | null;
           progress_percent?: number;
           project_id?: string;
+          render_duration_ms?: number | null;
           render_method?: string;
+          render_type?: string | null;
           scene_id?: string;
           status?: string;
           updated_at?: string;
